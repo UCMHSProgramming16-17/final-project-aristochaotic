@@ -22,7 +22,7 @@ for i in teams:
     #find the location of each team
     location = i['location']
     try:
-        #find the address of each team and append them to the ltd and lng lists
+        #find the latitude and longitude of each team and append them to the appropriate lists
         url = 'https://maps.googleapis.com/maps/api/geocode/json?=' 
         payload = {'key':'AIzaSyA4wsCs62yzwzy2HlUVg9tnRPMO2AA9qb4', 'address':location}
         r = requests.get(url, params=payload)
@@ -64,9 +64,7 @@ mapstyle = json.loads(json.dumps('[{"elementType":"labels.text","stylers":[{"vis
 map_options = GMapOptions(map_type="hybrid", styles=mapstyle)
 
 #plot the map
-plot = GMapPlot(
-    x_range=DataRange1d(), y_range=DataRange1d(), map_options=map_options
-)
+plot = GMapPlot(api_key="AIzaSyA4wsCs62yzwzy2HlUVg9tnRPMO2AA9qb4", x_range=DataRange1d(), y_range=DataRange1d(), map_options=map_options)
 
 plot.title.text='FRC Team Locations'
     
