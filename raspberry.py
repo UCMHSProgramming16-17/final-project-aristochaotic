@@ -39,18 +39,6 @@ for i in teams:
     r = requests.get(url, params=payload)
     locInfo = r.json()
     
-
-    try:
-        # Python will try to do the code inside this block
-        ltd.append(float(locInfo['results'][0]['geometry']['location']['lat']))
-        lng.append(float(locInfo['results'][0]['geometry']['location']['lng']))
-    except:
-        # If the block above fails, this block will run
-        # You can be specific and limit it based on specific exceptions, but I don't think you need to worry about that
-        # If you wanted to do that for the IndexError you were getting, it would look like the line below:
-        # except IndexError:
-        print("Couldn't get a location for team %s" % i['team_number'])
-    
     source = ColumnDataSource(
         data=dict(
             lat=ltd,
