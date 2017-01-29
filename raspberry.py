@@ -1,4 +1,4 @@
-import TheBlueAlliance as tba
+# import TheBlueAlliance as tba
 import numpy as np
 import pandas as pd
 import tbat
@@ -14,7 +14,8 @@ from bokeh.models import (
 ltd = []
 lng = []
 
-teams = tbat.get_all_teams()
+# teams = tbat.get_all_teams()
+teams = tbat.get_team_list(3)
 
 for i in teams:
     #find the location of each team
@@ -26,8 +27,17 @@ for i in teams:
     r = requests.get(url, params=payload)
     locInfo = r.json()
     
-    ltd.append(float(locInfo['results']['geometry']['location']['lat']))
-    lng.append(float(locInfo['results']['geometry']['location']['lng']))
+
+    try:
+        # Python will try to do the code inside this block
+        ltd.append(float(locInfo['results'][0]['geometry']['location']['lat']))
+        lng.append(float(locInfo['results'][0]['geometry']['location']['lng']))
+    except:
+        # If the block above fails, this block will run
+        # You can be specific and limit it based on specific exceptions, but I don't think you need to worry about that
+        # If you wanted to do that for the IndexError you were getting, it would look like the line below:
+        # except IndexError:
+        print("Couldn't get a location for team %s" % i['team_number'])
     
     source = ColumnDataSource(
         data=dict(
