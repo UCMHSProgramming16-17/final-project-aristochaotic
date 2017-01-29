@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 import TheBlueAlliance as tba
-=======
-# import TheBlueAlliance as tba
-import numpy as np
-import pandas as pd
->>>>>>> 7d10b6d9568d86595b1fb86e9c33d9052cae22b9
 import tbat
 import requests
 import json
@@ -15,18 +9,14 @@ from bokeh.models import (
   GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool
 )
 
-source = 0
-
 #will store latitude and longitude of frc teams
 ltd = []
 lng = []
 
-<<<<<<< HEAD
+#declare source to hold ltd and lng values and later plot points on the map
+source = 0
+
 teams = tbat.get_team_list(0)
-=======
-# teams = tbat.get_all_teams()
-teams = tbat.get_team_list(3)
->>>>>>> 7d10b6d9568d86595b1fb86e9c33d9052cae22b9
 
 for i in teams:
     #find the location of each team
@@ -43,9 +33,6 @@ for i in teams:
     except IndexError:
         continue
     
-<<<<<<< HEAD
-    #compile data for the graph
-=======
     #find the address of each team and append them to the ltd and lng lists
     url = 'https://maps.googleapis.com/maps/api/geocode/json?=' 
     payload = {'key':'AIzaSyA4wsCs62yzwzy2HlUVg9tnRPMO2AA9qb4', 'address':location}
@@ -64,7 +51,6 @@ for i in teams:
         # except IndexError:
         print("Couldn't get a location for team %s" % i['team_number'])
     
->>>>>>> 7d10b6d9568d86595b1fb86e9c33d9052cae22b9
     source = ColumnDataSource(
         data=dict(
             lat=ltd,
