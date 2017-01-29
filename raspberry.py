@@ -1,6 +1,7 @@
 import TheBlueAlliance as tba
 import numpy as np
 import pandas as pd
+import tbat
 import requests
 from bokeh.plotting import figure, output_file, save
 from bokeh.charts import Line, output_file, save
@@ -9,32 +10,30 @@ from bokeh.models import (
   GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool
 )
 
-lat = []
+ltd = []
 lng = []
 
-for i in range(0, 6768):
-        
-    url = "https://www.thebluealliance.com/api/v2/team/frc%s" % i #cycle through all FRC teams per request
-    authorization = {'X-TBA-APP-ID':'Tyler_Wright:TeamMap:v1'}
-    r = requests.get(url, headers=authorization)
-    data = r.json()
+teams = tbat.get_all_teams()
+
+for i in teams:
+    data = tbat.get_team_info(i)
     
     gurl = 'https://maps.googleapis.com/maps/api/geocode/json?=' #for location
     payload = {'key':'AIzaSyA4wsCs62yzwzy2HlUVg9tnRPMO2AA9qb4', 'address':data['location']}
     gr = requests.get(gurl, params=payload)
     locInfo = gr.json()
     
-    lat.append(float(locInfo['results'][0]['geometry']['location']['lat']))
+    ltd.append(float(locInfo['results'][0]['geometry']['location']['lat']))
     lng.append(float(locInfo['results'][0]['geometry']['location']['lng']))
     
     source = ColumnDataSource(
         data=dict(
-            lat,
-            lng,
+            lat=ltd,
+            lon=lng
         )
     )
  
-map_options = GMapOptions(lat=lat, lng=lng, map_type="hybrid", zoom=11)
+map_options = GMapOptions(lat=ltd, lng=lng, map_type="hybrid", zoom=11)
 
 plot = GMapPlot(
     x_range=DataRange1d(), y_range=DataRange1d(), map_options=map_options
